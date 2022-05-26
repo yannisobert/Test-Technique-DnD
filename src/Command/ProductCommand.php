@@ -36,7 +36,7 @@ class ProductCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $nameFile = $input->getArgument('file');
-        $test = $input->getArgument('json');
+        $json = $input->getArgument('json');
 
         if ($nameFile !== 'products') {
             $io->warning('The first argument doesn\'t exist, please retry.');
@@ -44,9 +44,9 @@ class ProductCommand extends Command
             return 0;
         }
 
-        if ($test)
+        if ($json)
         {
-            if ($test !== 'json') {
+            if ($json !== 'json') {
                 $io->warning('The second argument doesn\'t exist, please retry.');
 
                 return 0;
