@@ -53,7 +53,6 @@ class ProductCommand extends Command
             }
         }
 
-
         $productCsv = $this->projectDir . '/public/csv/' . $nameFile . '.csv';
 
         $csvOpen = fopen($productCsv, 'rb');
