@@ -8,12 +8,12 @@ use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 
 class ProductCommand extends Command
 {
     protected static $defaultName = 'app:csv-information';
-    private $dataProcess;
 
     function __construct(
         $projectDir
@@ -33,7 +33,26 @@ class ProductCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $nameFile = $input->getArgument('file');
+        $test = $input->getArgument('json');
+
+        if ($nameFile !== 'products') {
+            $io->warning('The first argument doesn\'t exist, please retry.');
+
+            return 0;
+        }
+
+        if ($test)
+        {
+            if ($test !== 'json') {
+                $io->warning('The second argument doesn\'t exist, please retry.');
+
+                return 0;
+            }
+        }
+
 
         $productCsv = $this->projectDir . '/public/csv/' . $nameFile . '.csv';
 
@@ -63,8 +82,7 @@ class ProductCommand extends Command
             $price = str_replace('.', ',', $document[3]);
             $currency = strip_tags($document[4]);
 
-            $description = str_replace('\r', "\n", $document[5]);
-            $description = str_replace('<br/>', "\n", $description);
+            $description = str_replace('<br/>', "\n",str_replace('\r', "\n", $document[5]));
 
             $table->addRow([$document[0], ($document[2] ? 'Enable' : 'Disable'), $price . $currency, $description, $date->format('l, j-M-Y H:i:s T'), $slug]);
 
@@ -87,5 +105,7 @@ class ProductCommand extends Command
         } else {
             $table->render();
         }
+
+        $io->success('DONE.');
     }
 }

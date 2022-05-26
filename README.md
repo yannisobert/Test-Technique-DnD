@@ -8,11 +8,16 @@
 
 ## Command:
 ### Arguments of the command:
-1. name of the csv (eg: <code>products</code>)
-2. json (eg: <code>json</code>)
+1. name of the csv (eg: <code>products</code>) and it is REQUIRED
+2. json (eg: <code>json</code>) and it is OPTIONNAL
 
 ### Launch command:
 1. For see the table in your terminal:
    <code>bin/console app:products products</code>
 2. For see the json in your terminal:
     <code>bin/console app:products products json</code>
+
+### Definition of the frequency of the CRON task
+
+For execute this command all day your can take this:
+<code>30 12 * * *</code>, in this example the command is launch all day à 00:30pm.
