@@ -77,13 +77,16 @@ class ProductCommand extends Command
             }
 
             $date = new \DateTime($document[6]);
-            $slug = preg_replace('/[^A-Za-z0-9\-]/', '-', str_replace(' ', '_', strtolower($document[1])));
+            $slug = preg_replace('/[^A-Za-z0-9\-]/', '-', str_replace(' ', '_',
+                strtolower($document[1])));
             $price = str_replace('.', ',', $document[3]);
             $currency = strip_tags($document[4]);
 
-            $description = str_replace('<br/>', "\n",str_replace('\r', "\n", $document[5]));
+            $description = str_replace('<br/>', "\n",str_replace('\r', "\n",
+                $document[5]));
 
-            $table->addRow([$document[0], ($document[2] ? 'Enable' : 'Disable'), $price . $currency, $description, $date->format('l, j-M-Y H:i:s T'), $slug]);
+            $table->addRow([$document[0], ($document[2] ? 'Enable' : 'Disable'), $price . $currency, $description,
+                $date->format('l, j-M-Y H:i:s T'), $slug]);
 
             $content = [
                 $titleArray[0][0] =>$document[0],
@@ -106,5 +109,7 @@ class ProductCommand extends Command
         }
 
         $io->success('DONE.');
+
+        return 1;
     }
 }
