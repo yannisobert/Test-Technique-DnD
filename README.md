@@ -2,7 +2,7 @@
 
 ## Installation:
 1. You need clone the repository, like that:
-<code>git clone <strong>'key ssh'</strong></code>
+<code>git clone git@github.com:yannisobert/Test-Technique-DnD.git</code>
 2. in your terminal, once you have gone to the root of this project, run:
 <code>composer install</code>
 
@@ -20,4 +20,4 @@
 ### Definition of the frequency of the CRON task
 
 For execute this command all day your can take this:
-<code>30 12 * * *</code>, in this example the command is launch all day à 00:30pm.
+<code>30 12 * * *</code>, in this example the command is launch all day at 12:30pm.
