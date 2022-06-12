@@ -13,9 +13,9 @@
 
 ### Launch command:
 1. For see the table in your terminal:
-   <code>bin/console app:csv-information products</code>
+   <code>bin/console app:csv-information /public/csv/ products</code>
 2. For see the json in your terminal:
-    <code>bin/console app:csv-information products json</code>
+    <code>bin/console app:csv-information /public/csv/ products json</code>
 
 ### Definition of the frequency of the CRON task
 
