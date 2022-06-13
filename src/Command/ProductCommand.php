@@ -2,8 +2,10 @@
 
 namespace App\Command;
 
-use App\Service\Read;
+use App\Service\Output;
+use App\Service\Reader;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,34 +15,36 @@ class ProductCommand extends Command
 {
     protected static $defaultName = 'app:csv-information';
 
-    function __construct($projectDir, Read $read)
+    private $projectDir;
+    private $reader;
+    private $output;
+
+    public function __construct(string $projectDir, Reader $reader, Output $output)
     {
         $this->projectDir = $projectDir;
-        $this->read = $read;
+        $this->reader = $reader;
+        $this->output = $output;
 
         parent::__construct();
     }
 
-    function configure()
+    public function configure(): void
     {
         $this->setDescription('Description.')
             ->addArgument('path', InputArgument::REQUIRED, 'csv path.')
-            ->addArgument('name', InputArgument::REQUIRED, 'csv name.')
             ->addArgument('json', InputArgument::OPTIONAL, 'json.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         // Argument retrieval
         $pathCsv = $input->getArgument('path');
-        $nameCsv = $input->getArgument('name');
         $json = $input->getArgument('json');
 
         // Verification if we have a third argument
-        if ($json)
-        {
+        if ($json) {
             // Verification if the third argument is good
             if ($json !== 'json') {
                 $io->warning('The third argument doesn\'t exist, please retry.');
@@ -50,11 +54,33 @@ class ProductCommand extends Command
         }
 
         // Path to the CSV
-        $productCsv = $this->projectDir . $pathCsv . $nameCsv . '.csv';
+        $filePath = $this->projectDir . $pathCsv;
 
-        //formatter
-        $this->read->csvToArray($productCsv, $input, $output, $io, $json);
+        // Verification if file exist
+        if (!is_file($filePath)) {
+            $io->error('File not found');
 
-        return 0;
+            return 1;
+        }
+
+        // Read file then output data
+        try {
+            $result = $this->reader->csvToArray($filePath);
+
+            if ($json) {
+                echo $this->output->toJson($result['lines']);
+            } else {
+                $table = new Table($output);
+                $table = $this->output->toTable($result, $table);
+                $table->render();
+            }
+
+            return 0;
+
+        } catch (\Exception $exception) {
+            $io->error($exception->getMessage());
+
+            return 1;
+        }
     }
 }

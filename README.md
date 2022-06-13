@@ -8,14 +8,14 @@
 
 ## Command:
 ### Arguments of the command:
-1. name of the csv (eg: <code>products</code>) and it is REQUIRED
+1. path of the csv (eg: <code>/path/to/your/file.csv</code>) and it is REQUIRED
 2. json (eg: <code>json</code>) and it is OPTIONNAL
 
 ### Launch command:
 1. For see the table in your terminal:
-   <code>bin/console app:csv-information /public/csv/ products</code>
+   <code>bin/console app:csv-information /public/csv/products.csv</code>
 2. For see the json in your terminal:
-    <code>bin/console app:csv-information /public/csv/ products json</code>
+    <code>bin/console app:csv-information /public/csv/products.csv json</code>
 
 ### Definition of the frequency of the CRON task
 
